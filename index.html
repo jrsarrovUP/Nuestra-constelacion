@@ -14,7 +14,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --cosmic-black: #0a0a0f;
             --deep-space: #1a1a2e;
@@ -23,7 +22,6 @@
             --distant-blue: #4a5a7a;
             --soft-white: #f5f5f5;
         }
-
         body {
             font-family: 'Cormorant Garamond', serif;
             background: var(--cosmic-black);
@@ -32,7 +30,6 @@
             overflow-x: hidden;
             position: relative;
         }
-
         .stars {
             position: fixed;
             top: 0;
@@ -42,7 +39,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .star {
             position: absolute;
             width: 2px;
@@ -51,12 +47,10 @@
             border-radius: 50%;
             animation: twinkle 3s infinite;
         }
-
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
         }
-
         .container {
             position: relative;
             z-index: 1;
@@ -68,21 +62,17 @@
             flex-direction: column;
             justify-content: center;
         }
-
         .phase {
             display: none;
             animation: fadeIn 1s ease-in;
         }
-
         .phase.active {
             display: block;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         h1 {
             font-family: 'Cinzel', serif;
             font-size: 3em;
@@ -95,7 +85,6 @@
             letter-spacing: 3px;
             line-height: 1.3;
         }
-
         h2 {
             font-family: 'Cinzel', serif;
             font-size: 2em;
@@ -103,7 +92,6 @@
             color: var(--stardust-gold);
             text-align: center;
         }
-
         p {
             font-size: 1.3em;
             line-height: 1.8;
@@ -111,7 +99,6 @@
             text-align: center;
             font-weight: 300;
         }
-
         button {
             background: linear-gradient(135deg, var(--nebula-purple), var(--distant-blue));
             color: var(--soft-white);
@@ -128,18 +115,15 @@
             letter-spacing: 2px;
             box-shadow: 0 5px 20px rgba(107, 75, 138, 0.3);
         }
-
         button:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(107, 75, 138, 0.5);
         }
-
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
         }
-
         .progress-container {
             width: 100%;
             height: 4px;
@@ -149,7 +133,6 @@
             overflow: hidden;
             position: relative;
         }
-
         .progress-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--nebula-purple), var(--stardust-gold));
@@ -157,7 +140,6 @@
             transition: width 0.5s ease;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
-
         .timer {
             text-align: center;
             font-size: 1.1em;
@@ -165,7 +147,6 @@
             margin-bottom: 20px;
             font-family: 'Cinzel', serif;
         }
-
         .song-card {
             background: rgba(26, 26, 46, 0.8);
             border: 1px solid var(--nebula-purple);
@@ -175,7 +156,6 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
-
         .song-instruction {
             font-style: italic;
             color: var(--stardust-gold);
@@ -184,7 +164,6 @@
             text-align: center;
             line-height: 1.6;
         }
-
         .song-title {
             font-family: 'Cinzel', serif;
             font-size: 1.5em;
@@ -192,14 +171,12 @@
             margin-bottom: 10px;
             text-align: center;
         }
-
         .song-artist {
             color: var(--distant-blue);
             margin-bottom: 20px;
             text-align: center;
             font-size: 1.1em;
         }
-
         .song-link {
             display: inline-block;
             color: var(--nebula-purple);
@@ -210,13 +187,11 @@
             transition: all 0.3s ease;
             font-size: 0.95em;
         }
-
         .song-link:hover {
             background: var(--nebula-purple);
             color: var(--soft-white);
             transform: translateY(-2px);
         }
-
         .question-card {
             background: rgba(26, 26, 46, 0.8);
             border: 1px solid var(--nebula-purple);
@@ -225,7 +200,6 @@
             margin: 30px 0;
             backdrop-filter: blur(10px);
         }
-
         .question-text {
             font-size: 1.4em;
             color: var(--stardust-gold);
@@ -233,7 +207,6 @@
             text-align: center;
             font-style: italic;
         }
-
         textarea {
             width: 100%;
             min-height: 150px;
@@ -247,13 +220,11 @@
             resize: vertical;
             line-height: 1.6;
         }
-
         textarea:focus {
             outline: none;
             border-color: var(--stardust-gold);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
         }
-
         input[type="text"],
         input[type="email"] {
             width: 100%;
@@ -266,13 +237,11 @@
             font-size: 1.1em;
             margin-bottom: 20px;
         }
-
         input:focus {
             outline: none;
             border-color: var(--stardust-gold);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
         }
-
         /* ESTILOS DEL ROMPECABEZAS */
         .puzzle-container {
             max-width: 500px;
@@ -283,7 +252,6 @@
             padding: 30px;
             backdrop-filter: blur(10px);
         }
-
         .puzzle-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -297,7 +265,6 @@
             padding: 5px;
             border-radius: 10px;
         }
-
         .puzzle-piece {
             background-size: 300%;
             background-position: center;
@@ -307,31 +274,26 @@
             transition: all 0.3s ease;
             position: relative;
         }
-
         .puzzle-piece:hover {
             transform: scale(1.05);
             border-color: var(--stardust-gold);
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
         }
-
         .puzzle-piece.correct {
             border-color: var(--nebula-purple);
             pointer-events: none;
         }
-
         .puzzle-piece.selected {
             border-color: var(--stardust-gold);
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
             transform: scale(1.1);
         }
-
         .puzzle-moves {
             text-align: center;
             margin-top: 20px;
             font-size: 1.1em;
             color: var(--stardust-gold);
         }
-
         .puzzle-complete-message {
             text-align: center;
             margin-top: 20px;
@@ -341,7 +303,6 @@
             border-radius: 15px;
             animation: fadeIn 0.5s ease-in;
         }
-
         .final-letter {
             background: rgba(26, 26, 46, 0.9);
             border: 2px solid var(--stardust-gold);
@@ -351,13 +312,11 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 15px 50px rgba(212, 175, 55, 0.3);
         }
-
         .final-letter p {
             text-align: left;
             margin-bottom: 25px;
             font-size: 1.25em;
         }
-
         .secret-message {
             margin-top: 40px;
             padding-top: 40px;
@@ -365,14 +324,12 @@
             font-style: italic;
             color: var(--stardust-gold);
         }
-
         .wait-timer {
             display: inline-block;
             color: var(--nebula-purple);
             font-family: 'Cinzel', serif;
             margin-left: 10px;
         }
-
         /* Botones de navegación de canciones */
         .song-nav-btn {
             padding: 10px 20px;
@@ -381,17 +338,14 @@
             background: rgba(26, 26, 46, 0.6);
             border: 1px solid var(--distant-blue);
         }
-
         .song-nav-btn.active {
             background: linear-gradient(135deg, var(--nebula-purple), var(--distant-blue));
             border-color: var(--stardust-gold);
         }
-
         .song-nav-btn.visited {
             border-color: var(--nebula-purple);
             background: rgba(107, 75, 138, 0.3);
         }
-
         .info-box {
             background: rgba(74, 90, 122, 0.2);
             border: 1px solid var(--distant-blue);
@@ -400,13 +354,11 @@
             margin: 20px 0;
             font-size: 1em;
         }
-
         .info-box p {
             text-align: left;
             font-size: 1.1em;
             margin-bottom: 10px;
         }
-
         .success-message {
             background: rgba(107, 75, 138, 0.3);
             border: 1px solid var(--nebula-purple);
@@ -416,34 +368,27 @@
             text-align: center;
             animation: fadeIn 0.5s ease-in;
         }
-
         @media (max-width: 768px) {
             h1 {
                 font-size: 2em;
             }
-
             h2 {
                 font-size: 1.5em;
             }
-
             p {
                 font-size: 1.1em;
             }
-
             .song-card, .question-card, .final-letter {
                 padding: 25px;
             }
-
             .puzzle-container {
                 padding: 20px;
             }
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.6; }
         }
-
         .pulse {
             animation: pulse 2s infinite;
         }
@@ -451,7 +396,6 @@
 </head>
 <body>
     <div class="stars" id="stars"></div>
-
     <div class="container">
         <!-- FASE 0: Inicio -->
         <div id="phase-intro" class="phase active">
@@ -464,7 +408,6 @@
             </p>
             <button onclick="startJourney()">Comienza Nuestro Viaje Estelar</button>
         </div>
-
         <!-- FASE 1: Playlist Guiada -->
         <div id="phase-playlist" class="phase">
             <h2>Nuestra Sinfonía Cósmica</h2>
@@ -474,7 +417,6 @@
             <div class="progress-container">
                 <div class="progress-bar" id="playlist-progress"></div>
             </div>
-
             <!-- Navegación de canciones -->
             <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap;">
                 <button class="song-nav-btn" onclick="loadSong(0)" id="song-btn-0">Canción 1</button>
@@ -483,9 +425,7 @@
                 <button class="song-nav-btn" onclick="loadSong(3)" id="song-btn-3">Canción 4</button>
                 <button class="song-nav-btn" onclick="loadSong(4)" id="song-btn-4">Canción 5</button>
             </div>
-
             <div id="song-container"></div>
-
             <button id="continue-playlist-btn" onclick="changePhase('puzzle')" disabled style="margin-top: 30px;">
                 Continuar al Siguiente Paso
             </button>
@@ -493,7 +433,6 @@
                 Debes abrir todas las canciones antes de continuar
             </p>
         </div>
-
         <!-- FASE 2: Rompecabezas -->
         <div id="phase-puzzle" class="phase">
             <h2>Reconstruyendo Memorias</h2>
@@ -501,7 +440,6 @@
             <p style="font-size: 1.1em; color: var(--stardust-gold);">
                 Haz click en las piezas para intercambiarlas y revelar nuestra imagen especial.
             </p>
-
             <!-- Easter egg escondido -->
             <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" 
                style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; 
@@ -510,7 +448,6 @@
                onmouseout="this.style.opacity='0.05'">
                 ✨
             </a>
-
             <div class="puzzle-container">
                 <div class="puzzle-grid" id="puzzle-grid"></div>
                 <div class="puzzle-moves">
@@ -521,12 +458,10 @@
                     <p>Has reconstruido este momento especial, así como reconstruimos cada día nuestra historia juntos.</p>
                 </div>
             </div>
-
             <button id="continue-from-puzzle" onclick="changePhase('questions')" disabled>
                 Continuar al Siguiente Paso
             </button>
         </div>
-
         <!-- FASE 3: Juego de Preguntas -->
         <div id="phase-questions" class="phase">
             <h2>Constelaciones de Palabras</h2>
@@ -534,18 +469,14 @@
             <div class="progress-container">
                 <div class="progress-bar" id="questions-progress"></div>
             </div>
-
             <div id="question-container"></div>
-
             <button id="next-question-btn" onclick="nextQuestion()" disabled>Continuar</button>
         </div>
-
         <!-- FASE 4: Envío de Respuestas -->
         <div id="phase-send" class="phase">
             <h2>Compartir tu Constelación</h2>
             <p>Has completado el viaje. Tus respuestas están guardadas en tu dispositivo.</p>
             <p>Si deseas compartirlas conmigo, puedes enviarlas usando cualquiera de estas opciones:</p>
-
             <!-- MÉTODO 1: Envío Automático -->
             <div class="question-card">
                 <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
@@ -568,7 +499,6 @@
                     <p>Continuando a la carta final...</p>
                 </div>
             </div>
-
             <!-- MÉTODO 2: Email -->
             <div class="question-card">
                 <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
@@ -579,7 +509,6 @@
                 </p>
                 <button onclick="sendByEmail()">Abrir Email</button>
             </div>
-
             <!-- MÉTODO 3: Copiar -->
             <div class="question-card">
                 <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
@@ -593,16 +522,13 @@
                     ✓ Copiado al portapapeles
                 </div>
             </div>
-
             <p style="text-align: center; margin-top: 30px; font-style: italic; color: var(--distant-blue);">
                 Si prefieres no compartir, también está bien ❤️
             </p>
-
             <button onclick="changePhase('letter')" style="margin-top: 20px;">
                 Continuar a la Carta Final
             </button>
         </div>
-
         <!-- FASE 5: Carta Final -->
         <div id="phase-letter" class="phase">
             <h2>Mensaje desde el Infinito</h2>
@@ -614,7 +540,6 @@
                 <p>La distancia es solo una ilusión del espacio físico. En el universo de nuestro amor, siempre estamos juntos, conectados por hilos invisibles más fuertes que la gravedad.</p>
                 <p>Te amo con la intensidad de mil supernovas y la constancia del sol que sale cada mañana.</p>
                 <p style="text-align: right; margin-top: 40px; font-style: italic;">Tuyo, en esta vida y en todas las galaxias,<br>Tu compañero cósmico</p>
-
                 <div class="secret-message">
                     <p style="text-align: center; font-size: 1.1em;">✨ Mensaje Secreto Desbloqueado ✨</p>
                     <p style="text-align: center;">
@@ -622,25 +547,20 @@
                     </p>
                 </div>
             </div>
-
             <p style="margin-top: 40px; text-align: center; font-style: italic; color: var(--stardust-gold);">
                 Guarda este momento en tu corazón. Hasta que volvamos a encontrarnos.
             </p>
         </div>
     </div>
-
     <script>
         // ============================================
         // CONFIGURACIÓN - EDITABLE
         // ============================================
-
         // ⚠️ IMPORTANTE: Cambia este email por el tuyo para recibir las respuestas
         const YOUR_EMAIL = "jrsarrov@gmail.com";
-
         // URL de la imagen para el rompecabezas (puedes usar una URL de GitHub, Imgur, etc.)
         // Por defecto usa un placeholder. Reemplaza con la URL de tu imagen.
         const PUZZLE_IMAGE_URL = "https://raw.githubusercontent.com/jrsarrovUP/Nuestra-constelacion/430ea30ce3d0687b12d6fc742e630abc2bf43749/assets/rompecabezas.jpg";
-
         const SONGS = [
             {
                 instruction: "Recuerdas porqué es especial esta canción? Estábamos confesando ciertas formas en las que en el caso 'hipotético' haríamos y diríamos si es que te enamorabas de tu mejor amigo. Esa noche ninguno de los dos durmió y como va esa canción 'Y esa fue la noche mas linda del mundo...'. Esta canción sonaba vez que te veía y ahora más.",
@@ -671,14 +591,13 @@
                 waitTime: 186
             },
             {
-                instruction: "Y como todas las parejas tienen una canción, me atrevería a decir que esta es (mínimo de ambientación) la nuestra ;).",
+                instruction: "Y como todas las parejas tienen una canción, me atrevería a decir que esta es (mínimo de ambientación) la nuestra. Disfrútala, recuerda esa bella noche en nuestro lugar, todas las emociones que se sintieron en el momento en el que comenzó a sonar esta canción y mi bella representación artística de ella. ;).",
                 title: "???",
                 artist: "----",
                 link: "https://open.spotify.com/intl-es/track/1FSdA7A445AhLvvWsh0IYK?si=c0a338ea8a53463b",
                 waitTime: 141
             }
         ];
-
         const QUESTIONS = [
             "Si pudieras viajar a cualquier planeta o estrella conmigo, ¿cuál elegirías y qué haríamos allí?",
             "¿Cuál es el recuerdo más pequeño que guardas de nosotros, ese que nadie más conoce pero que te hace sonreír?",
@@ -686,13 +605,10 @@
             "Escríbeme algo que quieras decirme cuando estemos finalmente juntos de nuevo, cara a cara.",
             "¿Qué es lo que más extrañas de mí en este momento? Sé específico, sé vulnerable."
         ];
-
         const TOTAL_JOURNEY_TIME = 1800;
-
         // ============================================
         // VARIABLES DEL SISTEMA
         // ============================================
-
         let currentPhase = 'intro';
         let currentSongIndex = 0;
         let currentQuestionIndex = 0;
@@ -700,24 +616,19 @@
         let globalTimerInterval = null;
         let songWaitInterval = null;
         let songStartTime = null;
-
         // Tracking de canciones visitadas
         let songsClicked = new Set();
-
         // Variables del rompecabezas
         let puzzlePieces = [];
         let selectedPiece = null;
         let moveCount = 0;
         let puzzleCompleted = false;
-
         // ============================================
         // INICIALIZACIÓN
         // ============================================
-
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const numberOfStars = 100;
-
             for (let i = 0; i < numberOfStars; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
@@ -727,37 +638,34 @@
                 starsContainer.appendChild(star);
             }
         }
-
         createStars();
-
         // ============================================
         // FUNCIONES DE NAVEGACIÓN
         // ============================================
-
         function startJourney() {
             globalStartTime = Date.now();
             changePhase('playlist');
             startGlobalTimer();
             loadSong(0);
         }
-
         function changePhase(phaseName) {
             document.querySelectorAll('.phase').forEach(phase => {
                 phase.classList.remove('active');
             });
             document.getElementById(`phase-${phaseName}`).classList.add('active');
             currentPhase = phaseName;
-
             // Inicializar rompecabezas cuando llegue a esa fase
             if (phaseName === 'puzzle' && puzzlePieces.length === 0) {
                 initPuzzle();
             }
+            // Cargar primera pregunta al llegar a esa fase
+            if (phaseName === 'questions') {
+                loadQuestion(0);
+            }
         }
-
         // ============================================
         // TEMPORIZADOR GLOBAL
         // ============================================
-
         function startGlobalTimer() {
             globalTimerInterval = setInterval(() => {
                 const elapsed = Math.floor((Date.now() - globalStartTime) / 1000);
@@ -770,14 +678,11 @@
                 }
             }, 1000);
         }
-
         // ============================================
         // FASE DE PLAYLIST
         // ============================================
-
         function loadSong(index) {
             if (currentPhase !== 'playlist') return;
-
             currentSongIndex = index;
             const song = SONGS[index];
             const container = document.getElementById('song-container');
@@ -794,7 +699,6 @@
                     </div>
                 </div>
             `;
-
             // Actualizar botones de navegación
             document.querySelectorAll('.song-nav-btn').forEach((btn, idx) => {
                 btn.classList.remove('active');
@@ -802,11 +706,9 @@
                     btn.classList.add('active');
                 }
             });
-
             // Actualizar progreso basado en canciones clickeadas
             updatePlaylistProgress();
         }
-
         function markSongAsClicked(index) {
             // Agregar al set de canciones clickeadas
             songsClicked.add(index);
@@ -821,12 +723,10 @@
             updatePlaylistProgress();
             checkAllSongsClicked();
         }
-
         function updatePlaylistProgress() {
             const progress = (songsClicked.size / SONGS.length) * 100;
             document.getElementById('playlist-progress').style.width = progress + '%';
         }
-
         function checkAllSongsClicked() {
             if (songsClicked.size === SONGS.length) {
                 // Todas las canciones han sido clickeadas
@@ -844,11 +744,9 @@
                 }
             }
         }
-
         // ============================================
         // FASE DE ROMPECABEZAS
         // ============================================
-
         function initPuzzle() {
             const grid = document.getElementById('puzzle-grid');
             grid.innerHTML = '';
@@ -881,17 +779,14 @@
             document.getElementById('move-counter').textContent = '0';
             checkPuzzleComplete();
         }
-
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
         }
-
         function selectPiece(position) {
             if (puzzleCompleted) return;
-
             const pieces = document.querySelectorAll('.puzzle-piece');
             
             if (selectedPiece === null) {
@@ -920,7 +815,6 @@
                 checkPuzzleComplete();
             }
         }
-
         function updatePuzzleDisplay() {
             const pieces = document.querySelectorAll('.puzzle-piece');
             
@@ -932,7 +826,6 @@
                 piece.dataset.correctPos = pieceIndex;
             });
         }
-
         function checkPuzzleComplete() {
             const isComplete = puzzlePieces.every((piece, index) => piece === index);
             
@@ -950,45 +843,36 @@
                 }, 500);
             }
         }
-
         // ============================================
         // FASE DE PREGUNTAS
         // ============================================
-
         function loadQuestion(index) {
             if (index >= QUESTIONS.length) {
                 changePhase('send');
                 return;
             }
-
             const question = QUESTIONS[index];
             const container = document.getElementById('question-container');
-
             container.innerHTML = `
                 <div class="question-card">
                     <div class="question-text">${question}</div>
                     <textarea id="answer-textarea" placeholder="Escribe tu respuesta aquí..."></textarea>
                 </div>
             `;
-
             const progress = ((index + 1) / QUESTIONS.length) * 100;
             document.getElementById('questions-progress').style.width = progress + '%';
-
             const textarea = document.getElementById('answer-textarea');
             const nextBtn = document.getElementById('next-question-btn');
             nextBtn.disabled = true;
-
             textarea.addEventListener('input', () => {
                 nextBtn.disabled = textarea.value.trim().length === 0;
             });
-
             const savedAnswer = localStorage.getItem(`answer_${index}`);
             if (savedAnswer) {
                 textarea.value = savedAnswer;
                 nextBtn.disabled = false;
             }
         }
-
         function nextQuestion() {
             const textarea = document.getElementById('answer-textarea');
             const answer = textarea.value.trim();
@@ -996,15 +880,12 @@
             if (answer) {
                 localStorage.setItem(`answer_${currentQuestionIndex}`, answer);
             }
-
             currentQuestionIndex++;
             loadQuestion(currentQuestionIndex);
         }
-
         // ============================================
         // FUNCIONES DE ENVÍO DE RESPUESTAS
         // ============================================
-
         function getAllAnswersText() {
             const name = document.getElementById('form-name')?.value || 'Tu estrella distante';
             let text = `RESPUESTAS DE "CONSTELACIÓN DE NOSOTROS"\n`;
@@ -1012,7 +893,6 @@
             text += `Fecha: ${new Date().toLocaleString('es')}\n`;
             text += `Movimientos en el rompecabezas: ${moveCount}\n\n`;
             text += `${'='.repeat(60)}\n\n`;
-
             for(let i = 0; i < QUESTIONS.length; i++) {
                 const answer = localStorage.getItem(`answer_${i}`);
                 if(answer) {
@@ -1021,10 +901,8 @@
                     text += `${'-'.repeat(60)}\n\n`;
                 }
             }
-
             return text;
         }
-
         function submitForm(event) {
             event.preventDefault();
             
@@ -1053,14 +931,12 @@
                 alert('Hubo un error. Por favor, usa el envío por email o copia las respuestas.');
             });
         }
-
         function sendByEmail() {
             const text = getAllAnswersText();
             const subject = encodeURIComponent('Mis respuestas de "Constelación de Nosotros" ✨');
             const body = encodeURIComponent(text);
             window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
         }
-
         function copyToClipboard() {
             const text = getAllAnswersText();
             navigator.clipboard.writeText(text).then(() => {
@@ -1071,11 +947,9 @@
                 alert('No se pudo copiar. Intenta con otro método.');
             });
         }
-
         // ============================================
         // UTILIDADES
         // ============================================
-
         window.addEventListener('beforeunload', (e) => {
             if (currentPhase !== 'intro' && currentPhase !== 'letter') {
                 e.preventDefault();
