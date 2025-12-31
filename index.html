@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constelación de Nosotros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cosmic-black: #0a0a0f;
+            --deep-space: #1a1a2e;
+            --nebula-purple: #6b4b8a;
+            --stardust-gold: #d4af37;
+            --distant-blue: #4a5a7a;
+            --soft-white: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: var(--cosmic-black);
+            color: var(--soft-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .phase {
+            display: none;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .phase.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3em;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--stardust-gold), var(--nebula-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+            line-height: 1.3;
+        }
+
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: var(--stardust-gold);
+            text-align: center;
+        }
+
+        p {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--distant-blue));
+            color: var(--soft-white);
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 50px;
+            margin: 20px auto;
+            display: block;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 20px rgba(107, 75, 138, 0.3);
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(107, 75, 138, 0.5);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: var(--deep-space);
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--nebula-purple), var(--stardust-gold));
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 1.1em;
+            color: var(--stardust-gold);
+            margin-bottom: 20px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .song-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid var(--nebula-purple);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .song-instruction {
+            font-style: italic;
+            color: var(--stardust-gold);
+            margin-bottom: 25px;
+            font-size: 1.2em;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .song-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5em;
+            color: var(--soft-white);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .song-artist {
+            color: var(--distant-blue);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .song-link {
+            display: inline-block;
+            color: var(--nebula-purple);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid var(--nebula-purple);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .song-link:hover {
+            background: var(--nebula-purple);
+            color: var(--soft-white);
+            transform: translateY(-2px);
+        }
+
+        .question-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid var(--nebula-purple);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .question-text {
+            font-size: 1.4em;
+            color: var(--stardust-gold);
+            margin-bottom: 25px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid var(--distant-blue);
+            border-radius: 15px;
+            padding: 20px;
+            color: var(--soft-white);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2em;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--stardust-gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            background: rgba(10, 10, 15, 0.6);
+            border: 1px solid var(--distant-blue);
+            border-radius: 15px;
+            padding: 15px 20px;
+            color: var(--soft-white);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--stardust-gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        /* ESTILOS DEL ROMPECABEZAS */
+        .puzzle-container {
+            max-width: 500px;
+            margin: 30px auto;
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid var(--nebula-purple);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+            aspect-ratio: 1;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            background: var(--deep-space);
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .puzzle-piece {
+            background-size: 300%;
+            background-position: center;
+            border: 2px solid var(--distant-blue);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(1.05);
+            border-color: var(--stardust-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .puzzle-piece.correct {
+            border-color: var(--nebula-purple);
+            pointer-events: none;
+        }
+
+        .puzzle-piece.selected {
+            border-color: var(--stardust-gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+            transform: scale(1.1);
+        }
+
+        .puzzle-moves {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: var(--stardust-gold);
+        }
+
+        .puzzle-complete-message {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(107, 75, 138, 0.3);
+            border: 1px solid var(--nebula-purple);
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .final-letter {
+            background: rgba(26, 26, 46, 0.9);
+            border: 2px solid var(--stardust-gold);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.3);
+        }
+
+        .final-letter p {
+            text-align: left;
+            margin-bottom: 25px;
+            font-size: 1.25em;
+        }
+
+        .secret-message {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid var(--nebula-purple);
+            font-style: italic;
+            color: var(--stardust-gold);
+        }
+
+        .wait-timer {
+            display: inline-block;
+            color: var(--nebula-purple);
+            font-family: 'Cinzel', serif;
+            margin-left: 10px;
+        }
+
+        /* Botones de navegación de canciones */
+        .song-nav-btn {
+            padding: 10px 20px;
+            font-size: 0.9em;
+            margin: 5px;
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid var(--distant-blue);
+        }
+
+        .song-nav-btn.active {
+            background: linear-gradient(135deg, var(--nebula-purple), var(--distant-blue));
+            border-color: var(--stardust-gold);
+        }
+
+        .song-nav-btn.visited {
+            border-color: var(--nebula-purple);
+            background: rgba(107, 75, 138, 0.3);
+        }
+
+        .info-box {
+            background: rgba(74, 90, 122, 0.2);
+            border: 1px solid var(--distant-blue);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1em;
+        }
+
+        .info-box p {
+            text-align: left;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .success-message {
+            background: rgba(107, 75, 138, 0.3);
+            border: 1px solid var(--nebula-purple);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            p {
+                font-size: 1.1em;
+            }
+
+            .song-card, .question-card, .final-letter {
+                padding: 25px;
+            }
+
+            .puzzle-container {
+                padding: 20px;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <!-- FASE 0: Inicio -->
+        <div id="phase-intro" class="phase active">
+            <h1>Constelación de Nosotros</h1>
+            <p>En la inmensidad del universo, dos estrellas encontraron su órbita.</p>
+            <p>Esta noche, aunque la distancia física nos separe, nuestras almas viajarán juntas a través del espacio y el tiempo.</p>
+            <p>Prepara tu corazón para un viaje de 30 minutos donde la música, las palabras y los recuerdos nos conectarán como la gravedad une a los planetas.</p>
+            <p style="font-style: italic; color: var(--stardust-gold); margin-top: 40px;">
+                Cierra los ojos. Respira profundo. Cuando estés lista, presiona el botón y antes de leer cada mensaje que tengo puesto para tí, ponle play a cada una de las canciones, lo disfrutarás más, confía en mí ;).
+            </p>
+            <button onclick="startJourney()">Comienza Nuestro Viaje Estelar</button>
+        </div>
+
+        <!-- FASE 1: Playlist Guiada -->
+        <div id="phase-playlist" class="phase">
+            <h2>Nuestra Sinfonía Cósmica</h2>
+            <div class="timer">
+                <span>⏱ Tiempo total transcurrido: <span id="global-timer">00:00</span></span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="playlist-progress"></div>
+            </div>
+
+            <!-- Navegación de canciones -->
+            <div style="display: flex; justify-content: center; gap: 10px; margin: 20px 0; flex-wrap: wrap;">
+                <button class="song-nav-btn" onclick="loadSong(0)" id="song-btn-0">Canción 1</button>
+                <button class="song-nav-btn" onclick="loadSong(1)" id="song-btn-1">Canción 2</button>
+                <button class="song-nav-btn" onclick="loadSong(2)" id="song-btn-2">Canción 3</button>
+                <button class="song-nav-btn" onclick="loadSong(3)" id="song-btn-3">Canción 4</button>
+                <button class="song-nav-btn" onclick="loadSong(4)" id="song-btn-4">Canción 5</button>
+            </div>
+
+            <div id="song-container"></div>
+
+            <button id="continue-playlist-btn" onclick="changePhase('puzzle')" disabled style="margin-top: 30px;">
+                Continuar al Siguiente Paso
+            </button>
+            <p id="songs-remaining" style="text-align: center; color: var(--nebula-purple); font-style: italic; margin-top: 10px; font-size: 1em;">
+                Debes abrir todas las canciones antes de continuar
+            </p>
+        </div>
+
+        <!-- FASE 2: Rompecabezas -->
+        <div id="phase-puzzle" class="phase">
+            <h2>Reconstruyendo Memorias</h2>
+            <p>Cada pieza que coloques en su lugar es un recuerdo que construimos juntos.</p>
+            <p style="font-size: 1.1em; color: var(--stardust-gold);">
+                Haz click en las piezas para intercambiarlas y revelar nuestra imagen especial.
+            </p>
+
+            <!-- Easter egg escondido -->
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" 
+               style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; 
+                      opacity: 0.05; cursor: pointer; transition: opacity 0.3s;"
+               onmouseover="this.style.opacity='0.3'" 
+               onmouseout="this.style.opacity='0.05'">
+                ✨
+            </a>
+
+            <div class="puzzle-container">
+                <div class="puzzle-grid" id="puzzle-grid"></div>
+                <div class="puzzle-moves">
+                    Movimientos: <span id="move-counter">0</span>
+                </div>
+                <div id="puzzle-complete" style="display: none;" class="puzzle-complete-message">
+                    <p style="font-size: 1.3em; color: var(--stardust-gold);">✨ ¡Lo lograste! ✨</p>
+                    <p>Has reconstruido este momento especial, así como reconstruimos cada día nuestra historia juntos.</p>
+                </div>
+            </div>
+
+            <button id="continue-from-puzzle" onclick="changePhase('questions')" disabled>
+                Continuar al Siguiente Paso
+            </button>
+        </div>
+
+        <!-- FASE 3: Juego de Preguntas -->
+        <div id="phase-questions" class="phase">
+            <h2>Constelaciones de Palabras</h2>
+            <p>Cada respuesta que escribas es una estrella que añades a nuestra galaxia compartida.</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="questions-progress"></div>
+            </div>
+
+            <div id="question-container"></div>
+
+            <button id="next-question-btn" onclick="nextQuestion()" disabled>Continuar</button>
+        </div>
+
+        <!-- FASE 4: Envío de Respuestas -->
+        <div id="phase-send" class="phase">
+            <h2>Compartir tu Constelación</h2>
+            <p>Has completado el viaje. Tus respuestas están guardadas en tu dispositivo.</p>
+            <p>Si deseas compartirlas conmigo, puedes enviarlas usando cualquiera de estas opciones:</p>
+
+            <!-- MÉTODO 1: Envío Automático -->
+            <div class="question-card">
+                <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
+                    ⭐ Envío Automático (Recomendado)
+                </h3>
+                <p style="font-size: 1.1em; text-align: center;">
+                    Tus respuestas se enviarán directamente y de forma segura
+                </p>
+                
+                <form id="submit-form" onsubmit="submitForm(event)">
+                    <input type="text" id="form-name" name="name" placeholder="Tu nombre (opcional)">
+                    <input type="hidden" name="_subject" value="Respuestas de Constelación de Nosotros ✨">
+                    <input type="hidden" name="_captcha" value="false">
+                    <textarea name="respuestas" id="form-answers" style="display:none;"></textarea>
+                    <button type="submit">Enviar Respuestas</button>
+                </form>
+                
+                <div id="form-success" style="display: none;" class="success-message">
+                    <p style="font-size: 1.2em;">✨ ¡Respuestas enviadas exitosamente! ✨</p>
+                    <p>Continuando a la carta final...</p>
+                </div>
+            </div>
+
+            <!-- MÉTODO 2: Email -->
+            <div class="question-card">
+                <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
+                    📧 Enviar por Email
+                </h3>
+                <p style="font-size: 1.1em; text-align: center;">
+                    Se abrirá tu app de email con las respuestas listas
+                </p>
+                <button onclick="sendByEmail()">Abrir Email</button>
+            </div>
+
+            <!-- MÉTODO 3: Copiar -->
+            <div class="question-card">
+                <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
+                    📋 Copiar y Enviar
+                </h3>
+                <p style="font-size: 1.1em; text-align: center;">
+                    Copia el texto y envíamelo por WhatsApp, Telegram, etc.
+                </p>
+                <button onclick="copyToClipboard()">Copiar Respuestas</button>
+                <div id="copy-success" style="display: none; text-align: center; color: var(--stardust-gold); margin-top: 10px;">
+                    ✓ Copiado al portapapeles
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 30px; font-style: italic; color: var(--distant-blue);">
+                Si prefieres no compartir, también está bien ❤️
+            </p>
+
+            <button onclick="changePhase('letter')" style="margin-top: 20px;">
+                Continuar a la Carta Final
+            </button>
+        </div>
+
+        <!-- FASE 5: Carta Final -->
+        <div id="phase-letter" class="phase">
+            <h2>Mensaje desde el Infinito</h2>
+            <div class="final-letter">
+                <p>Mi estrella distante,</p>
+                <p>Has completado este viaje conmigo, y aunque kilómetros nos separen, siento que nuestros corazones orbitan uno alrededor del otro con la precisión de los astros.</p>
+                <p>Cada canción que escuchaste fue elegida porque me recuerda a ti, a nosotros, a los momentos donde el tiempo se detuvo y solo existíamos tú y yo.</p>
+                <p>Cada pregunta que respondiste ahora vive en el espacio entre nosotros, flotando como polvo estelar que algún día se convertirá en nuevos mundos que exploraremos juntos.</p>
+                <p>La distancia es solo una ilusión del espacio físico. En el universo de nuestro amor, siempre estamos juntos, conectados por hilos invisibles más fuertes que la gravedad.</p>
+                <p>Te amo con la intensidad de mil supernovas y la constancia del sol que sale cada mañana.</p>
+                <p style="text-align: right; margin-top: 40px; font-style: italic;">Tuyo, en esta vida y en todas las galaxias,<br>Tu compañero cósmico</p>
+
+                <div class="secret-message">
+                    <p style="text-align: center; font-size: 1.1em;">✨ Mensaje Secreto Desbloqueado ✨</p>
+                    <p style="text-align: center;">
+                        "Cuando mires al cielo nocturno esta noche, recuerda: estamos mirando las mismas estrellas. Y en algún lugar entre tú y yo, nuestro amor brilla más fuerte que todas ellas juntas."
+                    </p>
+                </div>
+            </div>
+
+            <p style="margin-top: 40px; text-align: center; font-style: italic; color: var(--stardust-gold);">
+                Guarda este momento en tu corazón. Hasta que volvamos a encontrarnos.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURACIÓN - EDITABLE
+        // ============================================
+
+        // ⚠️ IMPORTANTE: Cambia este email por el tuyo para recibir las respuestas
+        const YOUR_EMAIL = "jrsarrov@gmail.com";
+
+        // URL de la imagen para el rompecabezas (puedes usar una URL de GitHub, Imgur, etc.)
+        // Por defecto usa un placeholder. Reemplaza con la URL de tu imagen.
+        const PUZZLE_IMAGE_URL = "https://drive.google.com/file/d/1ZqevBjy2BN-Bdfh2ELi3Y2dCt9A3BVfg/view?usp=sharing";
+
+        const SONGS = [
+            {
+                instruction: "Recuerdas porqué es especial esta canción? Estábamos confesando ciertas formas en las que en el caso 'hipotético' haríamos y diríamos si es que te enamorabas de tu mejor amigo. Esa noche ninguno de los dos durmió y como va esa canción 'Y esa fue la noche mas linda del mundo...'. Esta canción sonaba vez que te veía y ahora más.",
+                title: "Those Eyes",
+                artist: "New West",
+                link: "https://open.spotify.com/track/50x1Ic8CaXkYNvjmxe3WXy?si=a3631cc0e45a4b68",
+                waitTime: 220
+            },
+            {
+                instruction: "No fue la primera vez que nos conocimos tal cual, pero cierra los ojos y deja que te lleve a esa noche en el spot, desde ese momento donde te pedí si podías venir conmigo un ratito para hablar por el examen, hasta ese momento donde llegué yo con un agua de limón toda rancia en un vaso de 1L en la mano. Esa noche cuando conocí a la verdadera tú, a mi versión de KC, a esa versión que me concediste y que me dijiste que era solo mía. La noche en la que conociste un lado de mí que era libre, aunque fueran solo por unas horas, pero conociste a ese lado mío sin restricciones ni cadenas. Cierra los ojos y vuelve a esa noche.",
+                title: "The Night We Met",
+                artist: "Lord Huron",
+                link: "https://open.spotify.com/intl-es/track/3hRV0jL3vUpRrcy398teAU?si=f8103f910b4249dc",
+                waitTime: 180
+            },
+            {
+                instruction: "A lo largo de este mes (si, ya se redondea para arriba, princesa) que hemos estado juntos te lo he dicho varias veces, pero tu me mostraste esta canción cuando no eramos nada e inmediatamente tu te viniste a mi cabeza en el momento en el que comenzó a sonar. Porqué esta versión en específico? Porque me gusta pensar que con mis malos chistes y frases medio nerds también logré reparar cosas dentro de ti sin querer. Te lo dije ese 25 de noviembre, te lo dije ese 9 de diciembre y te lo repito hoy 1 de enero, mientras que tu me permitas vivir mis días contigo en mi vida, yo me encargaré de sanar esas heridas que yo no causé, te nutriré y te tomaré de la mano a cada paso del camino, porque eres más que capaz, pero ahora tienes a alguien que quiere que enfoques tus capacidades en cosas que te hagan crecer. Y como la canción dice 'Fell in love but it left me lonely, tried to trust but it burned me slowly, I didn't know what I was looking for... Till I found her...'",
+                title: "Her",
+                artist: "JVKE ft. Anika Wells",
+                link: "https://open.spotify.com/track/2Kc8MeW8prVwHEREYM3wCG?si=2a2a7f655f7a4719",
+                waitTime: 180
+            },
+            {
+                instruction: "Hace poco me preguntaste que si ya habíamos encontrado nuestra canción. No te respondí, o bueno 'creo que si, pero capaz y sería bueno buscar una que ambos hayamos vivido juntos' algo similar a lo que pasó con PK y Lara Jean. Bueno, permíteme traerte de vuelta a ese 3 de diciembre, una banca en Coyoacán después de una caminata donde yo te estaba siguiendo y tu me seguías a mi. Cuando se rompieron esas reglas que ambos impusimos porque no eramos nada oficial. Permíteme confesarte algo, cuando me preguntaste acerca de cual era mi sueño y me dijiste que querías estar en mi vida para verme cumplirlo y estar ahí para apoyarme y a medida de lo posible ayudarme a realizarlo, no pude evitar cambiar la forma en la que te veo, dejaste de ser mi mejor amiga de la que me enamoré y te convertiste en la persona con la que quiero que esté a mi lado cuando triunfe, a la que si pasa algo, quiero que esté ahí para recordarme que si puedo. Quiero que seas la mujer que jamás dejó que se quedara en un 'te imaginas si...' y que me dió un 'te acuerdas cuando hablábamos de tener todo esto?'. Es increíble pensar que al principio de nuestra amistad te molesté tanto con el rebaño que traías e irónicamente, me volví uno más de los hombres que KC traía locos... Pero ey, si recibiste este pedacito de mi parte es porque me viste, y después de intentarlo tanto, finalmente me volteaste a ver y me diste la oportunidad de demostrarte que por fin estás con alguien que te valorará y te mostrará que vales mil veces más de lo que cualquier otro te haya demostrado. Gracias por elegirme cada día, gracias por dejarme ser parte de tu vida y gracias por dejarme amarte.",
+                title: "Can't Help Falling in Love",
+                artist: "Elvis Presley",
+                link: "https://open.spotify.com/track/44AyOl4qVkzS48vBsbNXaC?si=b0645fcc80204871",
+                waitTime: 186
+            },
+            {
+                instruction: "Y como todas las parejas tienen una canción, me atrevería a decir que esta es (mínimo de ambientación) la nuestra ;).",
+                title: "???",
+                artist: "----",
+                link: "https://open.spotify.com/intl-es/track/1FSdA7A445AhLvvWsh0IYK?si=c0a338ea8a53463b",
+                waitTime: 141
+            }
+        ];
+
+        const QUESTIONS = [
+            "Si pudieras viajar a cualquier planeta o estrella conmigo, ¿cuál elegirías y qué haríamos allí?",
+            "¿Cuál es el recuerdo más pequeño que guardas de nosotros, ese que nadie más conoce pero que te hace sonreír?",
+            "Si nuestro amor fuera una constelación, ¿qué forma tendría y qué historia contaría?",
+            "Escríbeme algo que quieras decirme cuando estemos finalmente juntos de nuevo, cara a cara.",
+            "¿Qué es lo que más extrañas de mí en este momento? Sé específico, sé vulnerable."
+        ];
+
+        const TOTAL_JOURNEY_TIME = 1800;
+
+        // ============================================
+        // VARIABLES DEL SISTEMA
+        // ============================================
+
+        let currentPhase = 'intro';
+        let currentSongIndex = 0;
+        let currentQuestionIndex = 0;
+        let globalStartTime = null;
+        let globalTimerInterval = null;
+        let songWaitInterval = null;
+        let songStartTime = null;
+
+        // Tracking de canciones visitadas
+        let songsClicked = new Set();
+
+        // Variables del rompecabezas
+        let puzzlePieces = [];
+        let selectedPiece = null;
+        let moveCount = 0;
+        let puzzleCompleted = false;
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 100;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+
+        // ============================================
+        // FUNCIONES DE NAVEGACIÓN
+        // ============================================
+
+        function startJourney() {
+            globalStartTime = Date.now();
+            changePhase('playlist');
+            startGlobalTimer();
+            loadSong(0);
+        }
+
+        function changePhase(phaseName) {
+            document.querySelectorAll('.phase').forEach(phase => {
+                phase.classList.remove('active');
+            });
+            document.getElementById(`phase-${phaseName}`).classList.add('active');
+            currentPhase = phaseName;
+
+            // Inicializar rompecabezas cuando llegue a esa fase
+            if (phaseName === 'puzzle' && puzzlePieces.length === 0) {
+                initPuzzle();
+            }
+        }
+
+        // ============================================
+        // TEMPORIZADOR GLOBAL
+        // ============================================
+
+        function startGlobalTimer() {
+            globalTimerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - globalStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                const timerElement = document.getElementById('global-timer');
+                if (timerElement) {
+                    timerElement.textContent = 
+                        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        // ============================================
+        // FASE DE PLAYLIST
+        // ============================================
+
+        function loadSong(index) {
+            if (currentPhase !== 'playlist') return;
+
+            currentSongIndex = index;
+            const song = SONGS[index];
+            const container = document.getElementById('song-container');
+            
+            container.innerHTML = `
+                <div class="song-card">
+                    <div class="song-instruction">${song.instruction}</div>
+                    <div class="song-title">${song.title}</div>
+                    <div class="song-artist">${song.artist}</div>
+                    <div style="text-align: center;">
+                        <a href="${song.link}" target="_blank" class="song-link" id="song-link-${index}" onclick="markSongAsClicked(${index})">
+                            🎵 Escuchar en Spotify
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            // Actualizar botones de navegación
+            document.querySelectorAll('.song-nav-btn').forEach((btn, idx) => {
+                btn.classList.remove('active');
+                if (idx === index) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Actualizar progreso basado en canciones clickeadas
+            updatePlaylistProgress();
+        }
+
+        function markSongAsClicked(index) {
+            // Agregar al set de canciones clickeadas
+            songsClicked.add(index);
+            
+            // Marcar el botón como visitado
+            const btn = document.getElementById(`song-btn-${index}`);
+            if (btn) {
+                btn.classList.add('visited');
+            }
+            
+            // Actualizar progreso y verificar si todas han sido clickeadas
+            updatePlaylistProgress();
+            checkAllSongsClicked();
+        }
+
+        function updatePlaylistProgress() {
+            const progress = (songsClicked.size / SONGS.length) * 100;
+            document.getElementById('playlist-progress').style.width = progress + '%';
+        }
+
+        function checkAllSongsClicked() {
+            if (songsClicked.size === SONGS.length) {
+                // Todas las canciones han sido clickeadas
+                document.getElementById('continue-playlist-btn').disabled = false;
+                const remainingMsg = document.getElementById('songs-remaining');
+                if (remainingMsg) {
+                    remainingMsg.textContent = '✨ ¡Has escuchado todas las canciones! Puedes continuar ✨';
+                    remainingMsg.style.color = 'var(--stardust-gold)';
+                }
+            } else {
+                const remaining = SONGS.length - songsClicked.size;
+                const remainingMsg = document.getElementById('songs-remaining');
+                if (remainingMsg) {
+                    remainingMsg.textContent = `Te faltan ${remaining} canción${remaining !== 1 ? 'es' : ''} por abrir`;
+                }
+            }
+        }
+
+        // ============================================
+        // FASE DE ROMPECABEZAS
+        // ============================================
+
+        function initPuzzle() {
+            const grid = document.getElementById('puzzle-grid');
+            grid.innerHTML = '';
+            
+            // Crear array de posiciones [0-8]
+            puzzlePieces = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            
+            // Mezclar piezas
+            shuffleArray(puzzlePieces);
+            
+            // Crear las piezas del DOM
+            puzzlePieces.forEach((pieceIndex, position) => {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.dataset.currentPos = position;
+                piece.dataset.correctPos = pieceIndex;
+                
+                // Calcular posición de background
+                const row = Math.floor(pieceIndex / 3);
+                const col = pieceIndex % 3;
+                piece.style.backgroundImage = `url('${PUZZLE_IMAGE_URL}')`;
+                piece.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
+                
+                piece.addEventListener('click', () => selectPiece(position));
+                
+                grid.appendChild(piece);
+            });
+            
+            moveCount = 0;
+            document.getElementById('move-counter').textContent = '0';
+            checkPuzzleComplete();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function selectPiece(position) {
+            if (puzzleCompleted) return;
+
+            const pieces = document.querySelectorAll('.puzzle-piece');
+            
+            if (selectedPiece === null) {
+                // Primera pieza seleccionada
+                selectedPiece = position;
+                pieces[position].classList.add('selected');
+            } else if (selectedPiece === position) {
+                // Deseleccionar la misma pieza
+                pieces[position].classList.remove('selected');
+                selectedPiece = null;
+            } else {
+                // Intercambiar piezas
+                pieces[selectedPiece].classList.remove('selected');
+                
+                // Swap en el array
+                [puzzlePieces[selectedPiece], puzzlePieces[position]] = 
+                [puzzlePieces[position], puzzlePieces[selectedPiece]];
+                
+                moveCount++;
+                document.getElementById('move-counter').textContent = moveCount;
+                
+                selectedPiece = null;
+                
+                // Re-renderizar
+                updatePuzzleDisplay();
+                checkPuzzleComplete();
+            }
+        }
+
+        function updatePuzzleDisplay() {
+            const pieces = document.querySelectorAll('.puzzle-piece');
+            
+            puzzlePieces.forEach((pieceIndex, position) => {
+                const piece = pieces[position];
+                const row = Math.floor(pieceIndex / 3);
+                const col = pieceIndex % 3;
+                piece.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
+                piece.dataset.correctPos = pieceIndex;
+            });
+        }
+
+        function checkPuzzleComplete() {
+            const isComplete = puzzlePieces.every((piece, index) => piece === index);
+            
+            if (isComplete && !puzzleCompleted) {
+                puzzleCompleted = true;
+                const pieces = document.querySelectorAll('.puzzle-piece');
+                pieces.forEach(piece => piece.classList.add('correct'));
+                
+                document.getElementById('puzzle-complete').style.display = 'block';
+                document.getElementById('continue-from-puzzle').disabled = false;
+                
+                // Pequeña celebración
+                setTimeout(() => {
+                    alert('✨ ¡Excelente! Has reconstruido nuestro momento especial ✨');
+                }, 500);
+            }
+        }
+
+        // ============================================
+        // FASE DE PREGUNTAS
+        // ============================================
+
+        function loadQuestion(index) {
+            if (index >= QUESTIONS.length) {
+                changePhase('send');
+                return;
+            }
+
+            const question = QUESTIONS[index];
+            const container = document.getElementById('question-container');
+
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question-text">${question}</div>
+                    <textarea id="answer-textarea" placeholder="Escribe tu respuesta aquí..."></textarea>
+                </div>
+            `;
+
+            const progress = ((index + 1) / QUESTIONS.length) * 100;
+            document.getElementById('questions-progress').style.width = progress + '%';
+
+            const textarea = document.getElementById('answer-textarea');
+            const nextBtn = document.getElementById('next-question-btn');
+            nextBtn.disabled = true;
+
+            textarea.addEventListener('input', () => {
+                nextBtn.disabled = textarea.value.trim().length === 0;
+            });
+
+            const savedAnswer = localStorage.getItem(`answer_${index}`);
+            if (savedAnswer) {
+                textarea.value = savedAnswer;
+                nextBtn.disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            const textarea = document.getElementById('answer-textarea');
+            const answer = textarea.value.trim();
+            
+            if (answer) {
+                localStorage.setItem(`answer_${currentQuestionIndex}`, answer);
+            }
+
+            currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
+        }
+
+        // ============================================
+        // FUNCIONES DE ENVÍO DE RESPUESTAS
+        // ============================================
+
+        function getAllAnswersText() {
+            const name = document.getElementById('form-name')?.value || 'Tu estrella distante';
+            let text = `RESPUESTAS DE "CONSTELACIÓN DE NOSOTROS"\n`;
+            text += `De: ${name}\n`;
+            text += `Fecha: ${new Date().toLocaleString('es')}\n`;
+            text += `Movimientos en el rompecabezas: ${moveCount}\n\n`;
+            text += `${'='.repeat(60)}\n\n`;
+
+            for(let i = 0; i < QUESTIONS.length; i++) {
+                const answer = localStorage.getItem(`answer_${i}`);
+                if(answer) {
+                    text += `PREGUNTA ${i+1}:\n${QUESTIONS[i]}\n\n`;
+                    text += `RESPUESTA:\n${answer}\n\n`;
+                    text += `${'-'.repeat(60)}\n\n`;
+                }
+            }
+
+            return text;
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const answersText = getAllAnswersText();
+            document.getElementById('form-answers').value = answersText;
+            
+            const form = document.getElementById('submit-form');
+            const formData = new FormData(form);
+            
+            // Enviar a FormSubmit.co (servicio gratuito)
+            fetch(`https://formsubmit.co/${YOUR_EMAIL}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if(response.ok) {
+                    document.getElementById('submit-form').style.display = 'none';
+                    document.getElementById('form-success').style.display = 'block';
+                    setTimeout(() => changePhase('letter'), 3000);
+                } else {
+                    alert('Hubo un error. Por favor, usa el envío por email o copia las respuestas.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un error. Por favor, usa el envío por email o copia las respuestas.');
+            });
+        }
+
+        function sendByEmail() {
+            const text = getAllAnswersText();
+            const subject = encodeURIComponent('Mis respuestas de "Constelación de Nosotros" ✨');
+            const body = encodeURIComponent(text);
+            window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+        }
+
+        function copyToClipboard() {
+            const text = getAllAnswersText();
+            navigator.clipboard.writeText(text).then(() => {
+                const successMsg = document.getElementById('copy-success');
+                successMsg.style.display = 'block';
+                setTimeout(() => successMsg.style.display = 'none', 3000);
+            }).catch(err => {
+                alert('No se pudo copiar. Intenta con otro método.');
+            });
+        }
+
+        // ============================================
+        // UTILIDADES
+        // ============================================
+
+        window.addEventListener('beforeunload', (e) => {
+            if (currentPhase !== 'intro' && currentPhase !== 'letter') {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>
