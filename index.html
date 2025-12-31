@@ -392,6 +392,32 @@
         .pulse {
             animation: pulse 2s infinite;
         }
+        /* Animación para el easter egg (parpadeo de 5% a 25%) */
+        @keyframes flashEaster {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.25; }
+        }
+        .easter-egg {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            opacity: 0.05;
+            cursor: pointer;
+            animation: flashEaster 1.2s ease-in-out infinite;
+            transition: opacity 0.2s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            text-decoration: none;
+            color: var(--stardust-gold);
+        }
+        .easter-egg:hover {
+            opacity: 0.3;
+            transform: scale(1.15);
+        }
     </style>
 </head>
 <body>
@@ -442,10 +468,7 @@
             </p>
             <!-- Easter egg escondido -->
             <a href="https://drive.google.com/file/d/1uLIB2zglVmY0INBupf0HYVc2pFDXIgeI/view?usp=sharing" target="_blank" 
-               style="position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; 
-                      opacity: 0.05; cursor: pointer; transition: opacity 0.3s;"
-               onmouseover="this.style.opacity='0.3'" 
-               onmouseout="this.style.opacity='0.05'">
+               class="easter-egg" aria-label="Easter egg - abrir archivo secreto" title="Easter egg">
                 ✨
             </a>
             <div class="puzzle-container">
@@ -455,7 +478,7 @@
                 </div>
                 <div id="puzzle-complete" style="display: none;" class="puzzle-complete-message">
                     <p style="font-size: 1.3em; color: var(--stardust-gold);">✨ ¡Lo lograste! ✨</p>
-                    <p>Has reconstruido este momento especial, así como reconstruimos cada día nuestra historia juntos.</p>
+                    <p>Acabas de reconstruir uno de los momentos más importantes para nuestra relación, tal como reconstruiste mi corazón con cada una de tus sonrisas.</p>
                 </div>
             </div>
             <button id="continue-from-puzzle" onclick="changePhase('questions')" disabled>
@@ -533,19 +556,28 @@
         <div id="phase-letter" class="phase">
             <h2>Mensaje desde el Infinito</h2>
             <div class="final-letter">
-                <p>Mi estrella distante,</p>
-                <p>Has completado este viaje conmigo, y aunque kilómetros nos separen, siento que nuestros corazones orbitan uno alrededor del otro con la precisión de los astros.</p>
-                <p>Cada canción que escuchaste fue elegida porque me recuerda a ti, a nosotros, a los momentos donde el tiempo se detuvo y solo existíamos tú y yo.</p>
-                <p>Cada pregunta que respondiste ahora vive en el espacio entre nosotros, flotando como polvo estelar que algún día se convertirá en nuevos mundos que exploraremos juntos.</p>
-                <p>La distancia es solo una ilusión del espacio físico. En el universo de nuestro amor, siempre estamos juntos, conectados por hilos invisibles más fuertes que la gravedad.</p>
-                <p>Te amo con la intensidad de mil supernovas y la constancia del sol que sale cada mañana.</p>
-                <p style="text-align: right; margin-top: 40px; font-style: italic;">Tuyo, en esta vida y en todas las galaxias,<br>Tu compañero cósmico</p>
-                <div class="secret-message">
-                    <p style="text-align: center; font-size: 1.1em;">✨ Mensaje Secreto Desbloqueado ✨</p>
-                    <p style="text-align: center;">
-                        "Cuando mires al cielo nocturno esta noche, recuerda: estamos mirando las mismas estrellas. Y en algún lugar entre tú y yo, nuestro amor brilla más fuerte que todas ellas juntas."
-                    </p>
-                </div>
+                <p>Amor mío,</p>
+                <p>Hoy es primero de enero, y mientras el mundo cree que todo comienza con un conteo, yo sé que lo nuestro empezó mucho antes, sin aplausos ni fuegos artificiales. Empezó despacio. Empezó con miedo. Empezó con una amistad tan valiosa que me aterraba la idea de perderla.</p>
+                <p>Te conocí a finales de agosto, y sin darme cuenta, te volviste mi lugar seguro. Mi mejor amiga. Esa persona con la que podía ser yo sin filtros, sin máscaras, sin frenos. Y justo por eso, durante mucho tiempo negué lo que sentía. No porque no fuera real, sino porque era demasiado importante. Me daba miedo dar el paso, miedo a arriesgarlo todo por querer algo más, miedo a perderte incluso antes de intentarlo.</p>
+                <p>Yo seguía avanzando como quien conduce con el freno ligeramente presionado, sabiendo que el motor podía dar más, pero temiendo perder el control.</p>
+                <p>El 16 de octubre fue una de esas noches que no hacen ruido, pero lo cambian todo. Te pedí que nos viéramos en el spot porque no me sentía bien, porque el mundo se me estaba viniendo encima… y por alguna razón, la única persona en la que pensé fuiste tú. Y tú llegaste. Dejaste lo que estabas haciendo y viniste conmigo, sin preguntas, sin condiciones. Ese día entendí que tu presencia era refugio.</p>
+                <p>Ahí fui vulnerable contigo como pocas veces lo he sido. Te mostré un lado mío que casi nadie conoce. Bajé las defensas, apagué el motor y me quedé quieto frente a ti, confiando. Y lejos de alejarte, te quedaste. Nuestra conexión se fortaleció de una forma imposible de explicar, como cuando dos cuerpos celestes se alinean sin saber que estaban destinados a hacerlo. Desde entonces, algo en mí supo que contigo podía ser real, incluso en mis momentos más frágiles.</p>
+                <p>Aun así, seguí negando lo evidente. Porque a veces el corazón sabe antes que la razón, y yo todavía tenía miedo.</p>
+                <p>Hasta que llegó el 18 de noviembre.</p>
+                <p>Ese día, en tu presentación de baile, algo terminó de romperse —o de nacer— dentro de mí. Había más personas en el escenario, pero el universo decidió reducirse a ti. Mis ojos no podían dejar de seguirte. Cada movimiento tenía una precisión perfecta, como si estuvieras sincronizada con el ritmo del cosmos. Tu concentración era hipnótica. Tu entrega absoluta. Diste tu cien por ciento desde el primer segundo hasta el último, y yo entendí que ya no estaba mirando a mi mejor amiga… estaba mirando a la mujer que amaba.</p>
+                <p>Fue como ver una supernova nacer frente a mí. Una explosión silenciosa, inevitable, hermosa. Todo se iluminó de golpe. Y supe que lo que sentía era verdadero. Profundo. Irrefutable.</p>
+                <p>El 25 de noviembre decidí salir a pista sin protecciones. Te confesé lo que sentía con el corazón expuesto, sabiendo que amar también es una carrera donde puedes perderlo todo en una sola vuelta. Y cuando me correspondiste… algo dentro de mí encontró su lugar. Como si el universo, por fin, hubiera alineado sus estrellas.</p>
+                <p>El 9 de diciembre comenzamos oficialmente esta carrera juntos. Y entendí que amarte a ti no sería algo fugaz. Amarte a ti es como una carrera de 24 horas: larga, intensa, exigente y hermosa. No se trata de llegar rápido, sino de resistir. De cuidar el motor, de aprender cada curva, de seguir incluso cuando el cansancio pesa. Y aun así, jamás querría bajarme.</p>
+                <p>Y a veces me detengo a pensar… ¿quién diría que aquellos dos mensos que intentaban jugar FIFA un viernes cualquiera —perdiendo de maneras casi astronómicas— y que yo jamás me aprendí su horario, terminarían diciéndose “te amo”? ¿Y quién diría que nadie se sorprendería de eso? (Sí, esto es sarcasmo). Porque incluso en medio del caos, de los errores, de las risas torpes y las derrotas absurdas, ya éramos un equipo. Ya había algo ahí, aunque no supiéramos ponerle nombre todavía.</p>
+                <p>Este año nuevo quiero algo claro contigo. Quiero que nos dediquemos a nutrirnos el uno al otro. A ir al paso de ambos, y si alguno se rezaga, que el otro esté ahí para apoyar, para empujar con cariño, no con prisa. Quiero que sigamos siendo ese equipo inseparable que éramos cuando éramos amigos. Que aprendamos a confiar todavía más cuando las cosas se pongan feas. Que nos interesemos genuinamente por lo que le apasiona al otro, que tengamos debates donde ambos aprendamos, donde crezcamos, donde nos cuestionemos sin miedo.</p>
+                <p>Quiero que este año crezcamos juntos, pero también como individuos. Quiero verte triunfar. Quiero verte cumplir tus proyectos personales. Quiero apoyarte en cada uno de ellos y estar ahí para recordarte, todas las veces que haga falta, que si estás donde estás es por algo. Que no es casualidad. Que si alguien puede, eres tú. Y sí, podré estar a tu lado… pero si en algún momento necesitas que me ponga detrás de ti para impulsarte, para sostenerte, para cubrirte la espalda, lo haré sin dudarlo.</p>
+                <p>Este año me enseñó que el amor verdadero no acelera por huir, acelera por elegir. Elegirte a ti. Cada día. Incluso en la distancia. Incluso cuando te extraño tanto que el tiempo parece estirarse como el espacio infinito. Porque tú te volviste mi estrella guía. Mi punto fijo cuando todo gira. Mi supernova: esa luz que, aun estando lejos, es capaz de iluminarlo todo.</p>
+                <p>Gracias por quedarte. Gracias por verme incluso cuando me muestro vulnerable. Gracias por amar mis miedos, mis silencios, mis dudas. Por demostrarme que arriesgar vale la pena cuando el destino eres tú.</p>
+                <p>Hoy, primero de enero, no quiero prometerte perfección. Quiero prometerte constancia. Presencia. Quiero prometerte que seguiré corriendo esta carrera contigo, cuidando cada detalle, escuchando cada señal, amándote con la intensidad de quien sabe que encontró algo irrepetible.</p>
+                <p>Si algún día dudas, recuerda esto: hubo alguien que te vio llegar cuando más lo necesitaba. Alguien que te miró bailar y entendió que el universo acababa de cambiar. Alguien que te eligió aun con miedo. Alguien que te ama como se ama lo eterno: sin prisa, sin reservas, sin final.</p>
+                <p>Y si el universo tuviera que empezar de nuevo, volvería a encontrarte, incluso sin saber aún cómo decir tu nombre.</p>
+                <p>Feliz año nuevo, amor de mi vida.<br>Gracias por ser mi supernova.<br>Gracias por convertir el tiempo en algo infinito.<br>Gracias por ser tú.</p>
+                <p style="text-align: right; margin-top: 40px; font-style: italic;">Con todo lo que soy,<br>Siempre tuyo.</p>
             </div>
             <p style="margin-top: 40px; text-align: center; font-style: italic; color: var(--stardust-gold);">
                 Guarda este momento en tu corazón. Hasta que volvamos a encontrarnos.
@@ -557,7 +589,7 @@
         // CONFIGURACIÓN - EDITABLE
         // ============================================
         // ⚠️ IMPORTANTE: Cambia este email por el tuyo para recibir las respuestas
-        const YOUR_EMAIL = "jrsarrov@gmail.com";
+        const YOUR_EMAIL = "0254639@up.edu.mx";
         // URL de la imagen para el rompecabezas (puedes usar una URL de GitHub, Imgur, etc.)
         // Por defecto usa un placeholder. Reemplaza con la URL de tu imagen.
         const PUZZLE_IMAGE_URL = "https://raw.githubusercontent.com/jrsarrovUP/Nuestra-constelacion/430ea30ce3d0687b12d6fc742e630abc2bf43749/assets/rompecabezas.jpg";
@@ -839,7 +871,7 @@
                 
                 // Pequeña celebración
                 setTimeout(() => {
-                    alert('✨ ¡Excelente! Has reconstruido nuestro momento especial ✨');
+                    alert('✨ ¡Excelente! Reconstruiste la noche donde todos nos voltearon a ver. ✨');
                 }, 500);
             }
         }
@@ -913,7 +945,7 @@
             const formData = new FormData(form);
             
             // Enviar a FormSubmit.co (servicio gratuito)
-            fetch(`https://formsubmit.co/${YOUR_EMAIL}`, {
+            fetch(`https://formsubmit.co/jrsarrov@gmail.com`, {
                 method: 'POST',
                 body: formData
             })
