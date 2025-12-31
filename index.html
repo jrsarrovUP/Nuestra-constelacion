@@ -418,10 +418,122 @@
             opacity: 0.3;
             transform: scale(1.15);
         }
+        /* =========================================
+   APAGÓN / OVERLAY CINEMÁTICO
+   ========================================= */
+.cinematic-dim {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(1200px 800px at 50% 20%, rgba(0,0,0,.55), rgba(0,0,0,.92));
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.9s ease;
+}
+
+.cinematic-dim.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Caja de confesión encima del apagón */
+.confession-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.confession-modal.active { display: flex; }
+
+.confession-box {
+    width: min(760px, 100%);
+    background: rgba(10, 10, 15, 0.78);
+    border: 1px solid var(--nebula-purple);
+    border-radius: 22px;
+    padding: 36px 32px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 70px rgba(0,0,0,.55);
+    position: relative;
+}
+
+.confession-box h3{
+    font-family: 'Cinzel', serif;
+    color: var(--stardust-gold);
+    text-align: center;
+    margin-bottom: 18px;
+    letter-spacing: 2px;
+}
+
+.confession-text {
+    font-size: 1.25em;
+    line-height: 1.85;
+    white-space: pre-wrap;
+    text-align: center;
+    color: var(--soft-white);
+
+    /* 🔽 CLAVE PARA AUTOSCROLL */
+    max-height: 55vh;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+}
+
+
+.confession-caret{
+    display:inline-block;
+    width:10px;
+    height:20px;
+    border-left:2px solid rgba(245,245,245,.70);
+    margin-left: 4px;
+    transform: translateY(3px);
+    animation: twinkle 1.4s infinite;
+}
+
+/* Botón discreto dentro del modal */
+.confession-actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+/* Remate suave: centrado y sin scroll */
+.confession-text.final-mode{
+    max-height: none;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28vh;
+    text-align: center;
+    font-size: 1.45em;
+    letter-spacing: 0.5px;
+}
+
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
+    <!-- OVERLAY CINEMÁTICO (apagón total) -->
+<div class="cinematic-dim" id="cinematic-dim"></div>
+
+<!-- MODAL DE CONFESIÓN -->
+<div class="confession-modal" id="confession-modal" aria-hidden="true">
+    <div class="confession-box">
+        <h3>Una cosa que nunca digo en voz alta</h3>
+        <div class="confession-text" id="confession-text"></div><span class="confession-caret" id="confession-caret"></span>
+
+        <div class="confession-actions">
+            <button id="confession-continue" disabled onclick="showProfile()">
+                Continuar
+            </button>
+        </div>
+    </div>
+</div>
+
     <div class="container">
         <!-- FASE 0: Inicio -->
         <div id="phase-intro" class="phase active">
@@ -489,69 +601,64 @@
         <div id="phase-questions" class="phase">
             <h2>Constelaciones de Palabras</h2>
             <p>Cada respuesta que escribas es una estrella que añades a nuestra galaxia compartida.</p>
+            <p style="font-size: 1.1em; color: var(--distant-blue);">
+                Saca una hoja de papel, anota tus respuestas en ella y guárdala para entregármela en persona. <em>Ya sabes, para que tengamos una excusa más para vernos ;)</em>
+            </p>
             <div class="progress-container">
                 <div class="progress-bar" id="questions-progress"></div>
             </div>
             <div id="question-container"></div>
             <button id="next-question-btn" onclick="nextQuestion()" disabled>Continuar</button>
         </div>
-        <!-- FASE 4: Envío de Respuestas -->
-        <div id="phase-send" class="phase">
-            <h2>Compartir tu Constelación</h2>
-            <p>Has completado el viaje. Tus respuestas están guardadas en tu dispositivo.</p>
-            <p>Si deseas compartirlas conmigo, puedes enviarlas usando cualquiera de estas opciones:</p>
-            <!-- MÉTODO 1: Envío Automático -->
-            <div class="question-card">
-                <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
-                    ⭐ Envío Automático (Recomendado)
-                </h3>
-                <p style="font-size: 1.1em; text-align: center;">
-                    Tus respuestas se enviarán directamente y de forma segura
-                </p>
-                
-                <form id="submit-form" onsubmit="submitForm(event)">
-                    <input type="text" id="form-name" name="name" placeholder="Tu nombre (opcional)">
-                    <input type="hidden" name="_subject" value="Respuestas de Constelación de Nosotros ✨">
-                    <input type="hidden" name="_captcha" value="false">
-                    <textarea name="respuestas" id="form-answers" style="display:none;"></textarea>
-                    <button type="submit">Enviar Respuestas</button>
-                </form>
-                
-                <div id="form-success" style="display: none;" class="success-message">
-                    <p style="font-size: 1.2em;">✨ ¡Respuestas enviadas exitosamente! ✨</p>
-                    <p>Continuando a la carta final...</p>
-                </div>
-            </div>
-            <!-- MÉTODO 2: Email -->
-            <div class="question-card">
-                <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
-                    📧 Enviar por Email
-                </h3>
-                <p style="font-size: 1.1em; text-align: center;">
-                    Se abrirá tu app de email con las respuestas listas
-                </p>
-                <button onclick="sendByEmail()">Abrir Email</button>
-            </div>
-            <!-- MÉTODO 3: Copiar -->
-            <div class="question-card">
-                <h3 style="color: var(--stardust-gold); margin-bottom: 20px; text-align: center; font-family: 'Cinzel', serif;">
-                    📋 Copiar y Enviar
-                </h3>
-                <p style="font-size: 1.1em; text-align: center;">
-                    Copia el texto y envíamelo por WhatsApp, Telegram, etc.
-                </p>
-                <button onclick="copyToClipboard()">Copiar Respuestas</button>
-                <div id="copy-success" style="display: none; text-align: center; color: var(--stardust-gold); margin-top: 10px;">
-                    ✓ Copiado al portapapeles
-                </div>
-            </div>
-            <p style="text-align: center; margin-top: 30px; font-style: italic; color: var(--distant-blue);">
-                Si prefieres no compartir, también está bien ❤️
-            </p>
-            <button onclick="changePhase('letter')" style="margin-top: 20px;">
-                Continuar a la Carta Final
-            </button>
+        <!-- FASE 4: Confesión -->
+<div id="phase-send" class="phase">
+    <h2>No deberías presionar esto</h2>
+    <p style="font-style: italic; color: var(--distant-blue);">
+        Algunas verdades no se dicen en voz alta…  
+        se descubren.
+    </p>
+
+    <!-- BOTÓN PROHIBIDO -->
+    <div class="question-card" style="text-align:center;">
+        <button id="forbiddenBtn">No presiones esto</button>
+
+        <div id="confession-screen"
+             style="margin-top:30px;
+                    padding:30px;
+                    border-radius:20px;
+                    background:rgba(0,0,0,0.55);
+                    border:1px solid var(--nebula-purple);
+                    min-height:180px;
+                    display:none;">
+            <p id="confession-text"
+               style="font-size:1.3em;
+                      line-height:1.8;
+                      white-space:pre-wrap;"></p>
         </div>
+    </div>
+
+    <button onclick="showProfile()" style="margin-top:30px;" disabled id="continue-after-confession">
+        Continuar
+    </button>
+</div>
+<!-- FASE 4.5: La versión de ti que amo -->
+<div id="phase-profile" class="phase">
+    <h2>La versión de ti que amo</h2>
+    <p style="color: var(--distant-blue); font-style: italic;">
+        No la perfecta.  
+        La real.
+    </p>
+
+    <div class="question-card">
+        <div id="profile-content" style="font-size:1.25em; line-height:1.8;"></div>
+    </div>
+
+    <button onclick="changePhase('letter')" style="margin-top:30px;">
+        Leer la Carta Final
+    </button>
+</div>
+
+
         <!-- FASE 5: Carta Final -->
         <div id="phase-letter" class="phase">
             <h2>Mensaje desde el Infinito</h2>
@@ -888,30 +995,18 @@
             container.innerHTML = `
                 <div class="question-card">
                     <div class="question-text">${question}</div>
-                    <textarea id="answer-textarea" placeholder="Escribe tu respuesta aquí..."></textarea>
+                    <p style="font-size: 1.05em; color: var(--distant-blue); text-align: center; margin-top: 15px;">
+                        Saca tu hoja y anota tu respuesta allí. No escribas nada en esta página; cuando termines, presiona "Continuar".
+                    </p>
                 </div>
             `;
             const progress = ((index + 1) / QUESTIONS.length) * 100;
             document.getElementById('questions-progress').style.width = progress + '%';
-            const textarea = document.getElementById('answer-textarea');
             const nextBtn = document.getElementById('next-question-btn');
-            nextBtn.disabled = true;
-            textarea.addEventListener('input', () => {
-                nextBtn.disabled = textarea.value.trim().length === 0;
-            });
-            const savedAnswer = localStorage.getItem(`answer_${index}`);
-            if (savedAnswer) {
-                textarea.value = savedAnswer;
-                nextBtn.disabled = false;
-            }
+            nextBtn.disabled = false;
         }
         function nextQuestion() {
-            const textarea = document.getElementById('answer-textarea');
-            const answer = textarea.value.trim();
-            
-            if (answer) {
-                localStorage.setItem(`answer_${currentQuestionIndex}`, answer);
-            }
+            // No se recopilan respuestas desde la página. Simplemente avanzamos a la siguiente pregunta.
             currentQuestionIndex++;
             loadQuestion(currentQuestionIndex);
         }
@@ -937,13 +1032,18 @@
         }
         function submitForm(event) {
             event.preventDefault();
-            
-            const answersText = getAllAnswersText();
-            document.getElementById('form-answers').value = answersText;
-            
             const form = document.getElementById('submit-form');
+            if (!form) {
+                console.warn('submitForm: formulario no encontrado — opción desactivada');
+                return;
+            }
+
+            const answersText = getAllAnswersText();
+            const formAnswersEl = document.getElementById('form-answers');
+            if (formAnswersEl) formAnswersEl.value = answersText;
+
             const formData = new FormData(form);
-            
+
             // Enviar a FormSubmit.co (servicio gratuito)
             fetch(`https://formsubmit.co/jrsarrov@gmail.com`, {
                 method: 'POST',
@@ -951,7 +1051,7 @@
             })
             .then(response => {
                 if(response.ok) {
-                    document.getElementById('submit-form').style.display = 'none';
+                    form.style.display = 'none';
                     document.getElementById('form-success').style.display = 'block';
                     setTimeout(() => changePhase('letter'), 3000);
                 } else {
@@ -988,6 +1088,303 @@
                 e.returnValue = '';
             }
         });
+// ============================================
+// FASE EMOCIONAL: BOTÓN PROHIBIDO + PERFIL
+// ============================================
+
+// --- Personaliza aquí (referencias) ---
+const HER_NAME = "Cheesecake";
+
+const INSIDE_JOKES = {
+  fifa: "aquella vez jugando FIFA y perdiendo de maneras estratosféricas",
+  spot: "esa noche en el spot (la de tu versión de Cheesecake, la que dices que era ‘solo mía’)",
+  leySeca: "esa fiesta donde tomaste tanto que te autoimpusiste ley seca (orgullosamente)",
+  phrase: "gracias por quedarte"
+};
+
+
+// --- UI elements ---
+const forbiddenBtn = document.getElementById("forbiddenBtn");
+const dim = document.getElementById("cinematic-dim");
+const modal = document.getElementById("confession-modal");
+const confessionTextEl = document.getElementById("confession-text");
+const confessionCaret = document.getElementById("confession-caret");
+const confessionContinue = document.getElementById("confession-continue");
+const profileContent = document.getElementById("profile-content");
+
+let confessionRunning = false;
+
+// --- Ambient sound (WebAudio) ---
+let audioCtx = null;
+let masterGain = null;
+let noiseNode = null;
+let osc1 = null, osc2 = null;
+let filter = null;
+
+function startAmbient() {
+    try {
+        if (audioCtx) return; // already running
+
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.0001; // start almost silent
+        masterGain.connect(audioCtx.destination);
+
+        // Soft filtered noise (space-like)
+        const bufferSize = 2 * audioCtx.sampleRate;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) output[i] = (Math.random() * 2 - 1) * 0.25;
+
+        noiseNode = audioCtx.createBufferSource();
+        noiseNode.buffer = noiseBuffer;
+        noiseNode.loop = true;
+
+        filter = audioCtx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.value = 420; // warm cutoff
+        filter.Q.value = 0.8;
+
+        const noiseGain = audioCtx.createGain();
+        noiseGain.gain.value = 0.06;
+
+        noiseNode.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(masterGain);
+
+        // Two gentle sine oscillators (subtle “cosmic pad”)
+        osc1 = audioCtx.createOscillator();
+        osc2 = audioCtx.createOscillator();
+        osc1.type = "sine";
+        osc2.type = "sine";
+        osc1.frequency.value = 110; // A2
+        osc2.frequency.value = 164.81; // E3-ish
+
+        const oscGain = audioCtx.createGain();
+        oscGain.gain.value = 0.02;
+
+        osc1.connect(oscGain);
+        osc2.connect(oscGain);
+        oscGain.connect(masterGain);
+
+        noiseNode.start();
+        osc1.start();
+        osc2.start();
+
+        // Fade in master volume (cinematic)
+        const now = audioCtx.currentTime;
+        masterGain.gain.cancelScheduledValues(now);
+        masterGain.gain.setValueAtTime(0.0001, now);
+        masterGain.gain.exponentialRampToValueAtTime(0.18, now + 1.4);
+    } catch (e) {
+        console.warn("Audio ambient no pudo iniciar:", e);
+    }
+}
+
+function stopAmbientSoft() {
+    if (!audioCtx || !masterGain) return;
+    const now = audioCtx.currentTime;
+    masterGain.gain.cancelScheduledValues(now);
+    masterGain.gain.setValueAtTime(Math.max(masterGain.gain.value, 0.0001), now);
+    masterGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+}
+function duckAmbient(durationMs = 900, target = 0.035) {
+    if (!audioCtx || !masterGain) return;
+    const now = audioCtx.currentTime;
+
+    // baja suave
+    masterGain.gain.cancelScheduledValues(now);
+    masterGain.gain.setTargetAtTime(target, now, 0.12);
+
+    // regresa suave
+    setTimeout(() => {
+        if (!audioCtx || !masterGain) return;
+        const t = audioCtx.currentTime;
+        masterGain.gain.cancelScheduledValues(t);
+        masterGain.gain.setTargetAtTime(0.18, t, 0.18);
+    }, durationMs);
+}
+
+function setConfessionFinalMode(on = true) {
+    if (on) confessionTextEl.classList.add("final-mode");
+    else confessionTextEl.classList.remove("final-mode");
+}
+
+// --- Confession script (rompe y acaricia) ---
+const CONFESSION_SCRIPT = [
+  { t: "Ok…\n", p: 650 },
+  { t: "Que chismosa eres, te dije que no lo presionaras.\n", p: 700 },
+  { t: "Pero si estás aquí… Supongo que lo mínimo que puedo hacer es que te cuente algo.\n\n", p: 950 },
+
+  { t: `¿Quién diría que dos mensos ${INSIDE_JOKES.fifa}…\n`, p: 900 },
+  { t: "iban a terminar aquí.\n", p: 700 },
+  { t: "Diciéndose te amo.\n", p: 700 },
+  { t: "Y que nadie se lo esperaba.\n", p: 700 },
+  { t: "(Pero que tal Pato estuvo defendiéndonos a capa y espada contra todos los rumores)\n\n", p: 950 },
+
+  { t: `Me acuerdo de ${INSIDE_JOKES.spot}.\n`, p: 900 },
+  { t: "Porque ahí entendí algo muy simple:\n", p: 850 },
+  { t: "contigo puedo bajar la guardia…\n", p: 650 },
+  { t: "y no pagar el precio.\n\n", p: 950 },
+
+  { t: `Y también me acuerdo de ${INSIDE_JOKES.leySeca}.\n`, p: 900 },
+  { t: "No por la fiesta.\n", p: 650 },
+  { t: "Sino porque incluso en tu caos, siempre estás intentando cuidarte.\n", p: 850 },
+  { t: "Y a mí… eso me enternece de una forma peligrosa.\n\n", p: 950 },
+
+  { t: "Nunca te lo dije así de directo porque me daba miedo:\n", p: 1100 },
+  { t: "miedo a no estar a la altura de lo que mereces.\n", p: 850 },
+  { t: "miedo a fallarte en días feos.\n\n", p: 950 },
+
+  { t: "Pero hay una verdad que no cambia:\n", p: 900 },
+  { t: "amar no es perderse.\n", p: 650 },
+  { t: "Amar es encontrarse… en alguien.\n\n", p: 950 },
+
+  { t: `${HER_NAME}…\n`, p: 0, final: true },
+  { t: `${INSIDE_JOKES.phrase}.\n`, p: 900 }
+
+];
+
+function openConfession() {
+    dim.classList.add("active");
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    setConfessionFinalMode(false);
+}
+
+
+function closeConfession() {
+    dim.classList.remove("active");
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+}
+
+// typing helper
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+function autoScrollConfession() {
+    confessionTextEl.scrollTop = confessionTextEl.scrollHeight;
+}
+
+async function runConfessionTyping() {
+    confessionRunning = true;
+    confessionContinue.disabled = true;
+
+    // reset visual
+    setConfessionFinalMode(false);
+    confessionTextEl.textContent = "";
+    confessionCaret.style.display = "inline-block";
+
+    for (const step of CONFESSION_SCRIPT) {
+
+        // 🎬 REMATE SUAVE
+        if (step.final) {
+            // micro pausa antes de la palabra clave
+            await sleep(520);
+
+            // audio baja un poquito (no dramático)
+            duckAmbient(950, 0.03);
+
+            // cambia a modo centrado (sin scroll)
+            setConfessionFinalMode(true);
+
+            // muestra SOLO "Cheesecake…" centrado
+            confessionTextEl.textContent = "";
+        }
+
+        for (const ch of step.t) {
+            confessionTextEl.textContent += ch;
+
+            // autoscroll solo si NO estamos en remate centrado
+            if (!step.final) autoScrollConfession();
+
+            await sleep(step.final ? 42 : 28); // remate un poco más lento
+        }
+
+        // si fue remate, deja respirar un poco antes de seguir
+        if (step.final) await sleep(650);
+        else await sleep(step.p ?? 600);
+
+        // al terminar el remate, regresa al modo normal para el cierre
+        if (step.final) {
+            setConfessionFinalMode(false);
+            confessionTextEl.textContent += "\n"; // airecito visual
+        }
+    }
+
+    confessionCaret.style.display = "none";
+    confessionContinue.disabled = false;
+    confessionRunning = false;
+}
+
+// click bind
+if (forbiddenBtn) {
+    forbiddenBtn.addEventListener("click", async () => {
+        if (confessionRunning) return;
+
+        // Start ambient + dim screen
+        startAmbient();
+        openConfession();
+
+        // Run typing
+        await runConfessionTyping();
+    });
+}
+
+// --- Profile phase (la versión de ti que amo) ---
+function showProfile() {
+    // soften audio as we transition (optional)
+    stopAmbientSoft();
+
+    closeConfession();
+    changePhase("profile");
+
+    const profileHTML = `
+<b>Nombre:</b><br>
+${HER_NAME}. (O mejor dicho, MI princesa).<br><br>
+
+
+<b>Fortalezas:</b>
+<ul>
+  <li>La forma en la que sigues, incluso cuando tienes miedo.</li>
+  <li>Tu lealtad: cuando decides quedarte, te quedas de verdad.</li>
+  <li>Tu luz: esa que aparece cuando te emocionas y ni te das cuenta.</li>
+</ul>
+
+<b>Detalles que amo (y que nadie ve completo):</b>
+<ul>
+  <li>Cómo haces hogar con cosas pequeñas.</li>
+  <li>Cómo te ríes cuando ya no estás fingiendo “ser seria”.</li>
+  <li>Que puedes ser suave y fuerte al mismo tiempo.</li>
+</ul>
+
+<b>Una verdad:</b><br>
+Te exiges demasiado… y aun así sigues.<br>
+Y aunque no lo digas, a veces cargas más de lo que deberías.<br><br>
+
+<i>No te amo a pesar de esto.<br>
+Te amo con todo esto.</i>
+
+<br><br>
+<i>Y si el mundo se pone pesado…<br>
+yo te lo cargo un ratito.</i>
+
+`;
+
+    // type HTML into container (preserving tags)
+    profileContent.innerHTML = "";
+    let i = 0;
+
+    function typeNext(){
+        if (i >= profileHTML.length) return;
+        profileContent.innerHTML = profileHTML.slice(0, i + 1);
+        i++;
+        setTimeout(typeNext, 14);
+    }
+    typeNext();
+}
+
+
     </script>
 </body>
 </html>
