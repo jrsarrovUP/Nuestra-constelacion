@@ -512,6 +512,55 @@
     font-size: 1.45em;
     letter-spacing: 0.5px;
 }
+/* Mini nota secreta (easter emocional) */
+.secret-pop {
+    position: fixed;
+    left: 50%;
+    top: 18%;
+    transform: translateX(-50%);
+    z-index: 9997;
+    width: min(560px, 92%);
+    background: rgba(10,10,15,.78);
+    border: 1px solid var(--nebula-purple);
+    border-radius: 18px;
+    padding: 18px 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 18px 60px rgba(0,0,0,.55);
+    display: none;
+    text-align: center;
+}
+
+.secret-pop.active { display:block; }
+
+.secret-pop p{
+    margin: 0;
+    font-size: 1.15em;
+    color: var(--soft-white);
+    line-height: 1.7;
+}
+
+.secret-pop small{
+    display:block;
+    margin-top: 10px;
+    color: var(--distant-blue);
+    font-style: italic;
+}
+/* Audio controls en el modal */
+#audio-toggle{
+    padding: 12px 16px;
+    border-radius: 999px;
+    letter-spacing: 0;
+    text-transform: none;
+    min-width: 62px;
+}
+
+#audio-volume{
+    width: 170px;
+    accent-color: var(--stardust-gold);
+    cursor: pointer;
+    opacity: .9;
+}
+
 
     </style>
 </head>
@@ -527,10 +576,17 @@
         <div class="confession-text" id="confession-text"></div><span class="confession-caret" id="confession-caret"></span>
 
         <div class="confession-actions">
-            <button id="confession-continue" disabled onclick="showProfile()">
-                Continuar
-            </button>
-        </div>
+    <button id="audio-toggle" type="button" aria-label="Silenciar o activar audio">
+        🔊
+    </button>
+
+    <input id="audio-volume" type="range" min="0" max="100" value="35" />
+
+    <button id="confession-continue" disabled onclick="showProfile()">
+        Continuar
+    </button>
+</div>
+
     </div>
 </div>
 
@@ -684,13 +740,30 @@
                 <p>Si algún día dudas, recuerda esto: hubo alguien que te vio llegar cuando más lo necesitaba. Alguien que te miró bailar y entendió que el universo acababa de cambiar. Alguien que te eligió aun con miedo. Alguien que te ama como se ama lo eterno: sin prisa, sin reservas, sin final.</p>
                 <p>Y si el universo tuviera que empezar de nuevo, volvería a encontrarte, incluso sin saber aún cómo decir tu nombre.</p>
                 <p>Feliz año nuevo, amor de mi vida.<br>Gracias por ser mi supernova.<br>Gracias por convertir el tiempo en algo infinito.<br>Gracias por ser tú.</p>
-                <p style="text-align: right; margin-top: 40px; font-style: italic;">Con todo lo que soy,<br>Siempre tuyo.</p>
+                <p style="text-align: right; margin-top: 40px; font-style: italic;">Con todo lo que soy,<br>Siempre tuyo.</p> <p style="text-align:center; margin-top: 22px; color: var(--distant-blue); font-style: italic;">
+    Y si me pierdo… búscame en ti.
+</p>
+
             </div>
             <p style="margin-top: 40px; text-align: center; font-style: italic; color: var(--stardust-gold);">
                 Guarda este momento en tu corazón. Hasta que volvamos a encontrarnos.
             </p>
         </div>
     </div>
+    <div class="confession-modal" id="puzzle-modal" aria-hidden="true">
+    <div class="confession-box">
+        <h3>✨ Lo lograste ✨</h3>
+        <div class="confession-text" id="puzzle-modal-text">
+            Esta foto existe porque nos atrevimos.<br>
+            Y yo volvería a atreverme.
+        </div>
+
+        <div class="confession-actions">
+            <button type="button" id="puzzle-modal-close">Seguir</button>
+        </div>
+    </div>
+</div>
+
     <script>
         // ============================================
         // CONFIGURACIÓN - EDITABLE
@@ -977,9 +1050,10 @@
                 document.getElementById('continue-from-puzzle').disabled = false;
                 
                 // Pequeña celebración
-                setTimeout(() => {
-                    alert('✨ ¡Excelente! Reconstruiste la noche donde todos nos voltearon a ver. ✨');
-                }, 500);
+setTimeout(() => {
+    openPuzzleModal();
+}, 450);
+
             }
         }
         // ============================================
@@ -1102,6 +1176,34 @@ const INSIDE_JOKES = {
   phrase: "gracias por quedarte ❤️"
 };
 
+const audioToggleBtn = document.getElementById("audio-toggle");
+const audioVolume = document.getElementById("audio-volume");
+let audioMuted = false;
+
+// volumen base recomendado (0.18 era tu master target)
+const BASE_MASTER = 0.18;
+
+// aplica volumen desde slider (0..1)
+function applyAudioVolume() {
+    if (!audioCtx || !masterGain) return;
+    const v = (Number(audioVolume?.value ?? 35) / 100); // 0..1
+    const target = audioMuted ? 0.0001 : Math.max(0.0001, BASE_MASTER * v);
+    const now = audioCtx.currentTime;
+    masterGain.gain.cancelScheduledValues(now);
+    masterGain.gain.setTargetAtTime(target, now, 0.12);
+}
+
+if (audioToggleBtn) {
+    audioToggleBtn.addEventListener("click", () => {
+        audioMuted = !audioMuted;
+        audioToggleBtn.textContent = audioMuted ? "🔇" : "🔊";
+        applyAudioVolume();
+    });
+}
+
+if (audioVolume) {
+    audioVolume.addEventListener("input", () => applyAudioVolume());
+}
 
 // --- UI elements ---
 const forbiddenBtn = document.getElementById("forbiddenBtn");
@@ -1177,6 +1279,9 @@ function startAmbient() {
         masterGain.gain.cancelScheduledValues(now);
         masterGain.gain.setValueAtTime(0.0001, now);
         masterGain.gain.exponentialRampToValueAtTime(0.18, now + 1.4);
+        // Ajusta al volumen seleccionado (y respeta mute)
+setTimeout(applyAudioVolume, 50);
+
     } catch (e) {
         console.warn("Audio ambient no pudo iniciar:", e);
     }
@@ -1383,6 +1488,61 @@ yo te lo cargo un ratito.</i>
         setTimeout(typeNext, 14);
     }
     typeNext();
+}
+// ============================================
+// Easter egg emocional: triple click en el título
+// ============================================
+(function setupEmotionalEasterEgg(){
+    const titleEl = document.querySelector('#phase-intro h1');
+    if (!titleEl) return;
+
+    // Crear popup
+    const pop = document.createElement('div');
+    pop.className = 'secret-pop';
+    pop.innerHTML = `
+      <p>Si llegaste aquí…<br>te debo un abrazo.</p>
+      <small>(Uno real. Sin prisa.)</small>
+    `;
+    document.body.appendChild(pop);
+
+    let clicks = 0;
+    let timer = null;
+
+    titleEl.style.cursor = "pointer";
+    titleEl.title = "👀";
+
+    titleEl.addEventListener('click', () => {
+        clicks++;
+        clearTimeout(timer);
+        timer = setTimeout(() => clicks = 0, 700);
+
+        if (clicks >= 3) {
+            clicks = 0;
+            pop.classList.add('active');
+            setTimeout(() => pop.classList.remove('active'), 2600);
+        }
+    });
+})();
+// ============================================
+// Modal bonito para rompecabezas (sin alert)
+// ============================================
+const puzzleModal = document.getElementById("puzzle-modal");
+const puzzleModalClose = document.getElementById("puzzle-modal-close");
+
+function openPuzzleModal(){
+    if (!puzzleModal) return;
+    puzzleModal.classList.add("active");
+    puzzleModal.setAttribute("aria-hidden", "false");
+}
+
+function closePuzzleModal(){
+    if (!puzzleModal) return;
+    puzzleModal.classList.remove("active");
+    puzzleModal.setAttribute("aria-hidden", "true");
+}
+
+if (puzzleModalClose){
+    puzzleModalClose.addEventListener("click", closePuzzleModal);
 }
 
 
